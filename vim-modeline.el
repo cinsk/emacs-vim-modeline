@@ -35,6 +35,8 @@
 (defvar vim-modeline/options-alist
   '(("shiftwidth" . vim-modeline/shiftwidth)
     ("sw" . vim-modeline/shiftwidth)
+    ("textwidth" . vim-modeline/textwidth)
+    ("tw" . vim-modeline/textwidth)
     ("tabstop" . vim-modeline/tabstop)
     ("ts" . vim-modeline/tabstop)
     ("softtabstop" . vim-modeline/tabstop)
@@ -48,10 +50,10 @@
     ("noexpandtab" . vim-modeline/expandtab)
     ("noet" . vim-modeline/expandtab))
   "Alist of VIM option names and handlers")
-  
+
 ;;;
 ;;; From the VIM help messages
-;;; 
+;;;
 ;;; There are two forms of modelines.  The first form:
 ;;; 	[text]{white}{vi:|vim:|ex:}[white]{options}
 ;;;
@@ -64,7 +66,7 @@
 ;;; 		command (can be empty)
 ;;;
 ;;; Example:
-;;;    vi:noai:sw=3 ts=6 
+;;;    vi:noai:sw=3 ts=6
 ;;;
 ;;; The second form (this is compatible with some versions of Vi):
 ;;;
@@ -81,7 +83,7 @@
 ;;; [text]		any text or empty
 ;;;
 ;;; Example:
-;;;    /* vim: set ai tw=75: */ 
+;;;    /* vim: set ai tw=75: */
 ;;;
 ;;; The white space before {vi:|vim:|ex:} is required.  This minimizes
 ;;; the chance that a normal word like "lex:" is caught.  There is one
@@ -139,7 +141,7 @@ Otherwise this function returns nil."
     (when (re-search-forward
            "[[:blank:]]+\\(?:vi:\\|vim:\\|ex:\\)[[:blank:]]?set? " bound t)
       ;; INPUT matches for the second form of modeline.
-      (let ((start (match-end 0)) 
+      (let ((start (match-end 0))
             (end (line-end-position)))
         (goto-char (1- start))
         (when (re-search-forward "[^\\]:" end t)
@@ -181,7 +183,7 @@ Otherwise this function returns nil."
                             idx (1+ idx)))))
         (if end
             (setq result (cons " " (substring input start end)))
-          (lwarn :vim-modeline :warning 
+          (lwarn :vim-modeline :warning
                  "wrong/suspicious modeline syntax detected"))))
     (when (and (not result)
                (string-match "[[:blank:]]+\\(vi:\\|vim:\\|ex:\\)[[:blank:]]?"
@@ -211,7 +213,7 @@ Otherwise this function returns nil."
           (setq input (vim-modeline/extract-option-line nil))
           (if input
               (setq result
-                    (append result 
+                    (append result
                             (vim-modeline/split-options (cdr input)
                                                         (car input))))))))
     (vim-modeline/parse-options result)))
@@ -243,7 +245,7 @@ Otherwise this function returns nil."
             ((or (string-equal name "softtabstop")
                  (string-equal name "sts"))
              (setq tab-width offset))))))
-             
+
 
 (defun vim-modeline/shiftwidth (name &optional value options)
   (let ((offset (string-to-number value)))
@@ -253,14 +255,34 @@ Otherwise this function returns nil."
              (local-variable-p 'c-basic-offset)
              (setq c-basic-offset offset))
             (;; For LISP-related
-             (memq major-mode '(emacs-lisp-mode 
-                                lisp-mode 
+             (memq major-mode '(emacs-lisp-mode
+                                lisp-mode
                                 lisp-interaction-mode))
              (make-local-variable 'lisp-indent-offset)
              (setq lisp-indent-offset offset))
+            (;; For python mode
+             (memq major-mode '(python-mode))
+             (make-local-variable 'python-indent)
+             (setq python-indent offset))
+            (;; For lua
+             (memq major-mode '(lua-mode))
+             (make-local-variable 'lua-indent-level)
+             (setq lua-indent-level offset))
+            (;; For HTML
+             (memq major-mode '(html-mode))
+             (make-local-variable 'sgml-basic-offset)
+             (setq sgml-basic-offset offset))
             (t
              (lwarn :vim-modeline :warning
                     "shiftwidth for %S is not supported." major-mode))))))
+
+
+(defun vim-modeline/textwidth (name &optional value options)
+  (let ((width (string-to-number value)))
+    (when (or (> width 20))
+      (message "vim-modeline: set textwidth to %S" width)
+      (setq fill-column width))))
+
 
 (defun vim-modeline/number (name &optional value options)
   (if (fboundp 'linum-mode)
@@ -271,12 +293,12 @@ Otherwise this function returns nil."
 (defun vim-modeline/nonumber (name &optional value options)
   (if (fboundp 'linum-mode)
       (linum-mode 0)))
-          
+
 (defun vim-modeline/expandtab (name &optional value options)
-  (setq indent-tabs-mode t))
+  (setq indent-tabs-mode nil))
 
 (defun vim-modeline/noexpandtab (name &optional value options)
-  (setq indent-tabs-mode nil))
+  (setq indent-tabs-mode t))
 
 
 (provide 'vim-modeline)
