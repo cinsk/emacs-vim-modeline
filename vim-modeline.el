@@ -283,10 +283,10 @@ Otherwise this function returns nil."
       (linum-mode 0)))
 
 (defun vim-modeline/expandtab (name &optional value options)
-  (setq indent-tabs-mode t))
+  (setq indent-tabs-mode nil))
 
 (defun vim-modeline/noexpandtab (name &optional value options)
-  (setq indent-tabs-mode nil))
+  (setq indent-tabs-mode t))
 
 
 (provide 'vim-modeline)
