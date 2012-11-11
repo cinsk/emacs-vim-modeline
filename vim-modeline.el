@@ -260,6 +260,18 @@ Otherwise this function returns nil."
                                 lisp-interaction-mode))
              (make-local-variable 'lisp-indent-offset)
              (setq lisp-indent-offset offset))
+            (;; For python mode
+             (memq major-mode '(python-mode))
+             (make-local-variable 'python-indent)
+             (setq python-indent offset))
+            (;; For lua
+             (memq major-mode '(lua-mode))
+             (make-local-variable 'lua-indent-level)
+             (setq lua-indent-level offset))
+            (;; For HTML
+             (memq major-mode '(html-mode))
+             (make-local-variable 'sgml-basic-offset)
+             (setq sgml-basic-offset offset))
             (t
              (lwarn :vim-modeline :warning
                     "shiftwidth for %S is not supported." major-mode))))))
