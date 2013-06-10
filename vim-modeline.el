@@ -55,32 +55,32 @@
 ;;; From the VIM help messages
 ;;;
 ;;; There are two forms of modelines.  The first form:
-;;; 	[text]{white}{vi:|vim:|ex:}[white]{options}
+;;;     [text]{white}{vi:|vim:|ex:}[white]{options}
 ;;;
-;;; [text]		any text or empty
-;;; {white}		at least one blank character (<Space> or <Tab>)
-;;; {vi:|vim:|ex:}	the string "vi:", "vim:" or "ex:"
-;;; [white]		optional white space
-;;; {options}	a list of option settings, separated with white space or ':',
-;;; 		where each part between ':' is the argument for a ":set"
-;;; 		command (can be empty)
+;;; [text]              any text or empty
+;;; {white}             at least one blank character (<Space> or <Tab>)
+;;; {vi:|vim:|ex:}      the string "vi:", "vim:" or "ex:"
+;;; [white]             optional white space
+;;; {options}   a list of option settings, separated with white space or ':',
+;;;             where each part between ':' is the argument for a ":set"
+;;;             command (can be empty)
 ;;;
 ;;; Example:
 ;;;    vi:noai:sw=3 ts=6
 ;;;
 ;;; The second form (this is compatible with some versions of Vi):
 ;;;
-;;; 	[text]{white}{vi:|vim:|ex:}[white]se[t] {options}:[text]
+;;;     [text]{white}{vi:|vim:|ex:}[white]se[t] {options}:[text]
 ;;;
-;;; [text]		any text or empty
-;;; {white}		at least one blank character (<Space> or <Tab>)
-;;; {vi:|vim:|ex:}	the string "vi:", "vim:" or "ex:"
-;;; [white]		optional white space
-;;; se[t]		the string "set " or "se " (note the space)
-;;; {options}	a list of options, separated with white space, which is the
-;;; 		argument for a ":set" command
-;;; :		a colon
-;;; [text]		any text or empty
+;;; [text]              any text or empty
+;;; {white}             at least one blank character (<Space> or <Tab>)
+;;; {vi:|vim:|ex:}      the string "vi:", "vim:" or "ex:"
+;;; [white]             optional white space
+;;; se[t]               the string "set " or "se " (note the space)
+;;; {options}   a list of options, separated with white space, which is the
+;;;             argument for a ":set" command
+;;; :           a colon
+;;; [text]              any text or empty
 ;;;
 ;;; Example:
 ;;;    /* vim: set ai tw=75: */
