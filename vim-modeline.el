@@ -23,6 +23,10 @@
 ;; VIM (includes vi and ex) uses its own per-file configuration called
 ;; 'modeline', which is almost similar to the file local variables in Emacs.
 
+;; To enable this package after loading it, add `vim-modeline/do' to
+;; `find-file-hook':
+
+;;   (add-to-list 'find-file-hook 'vim-modeline/do)
 
 ;;; Code:
 
