@@ -28,11 +28,16 @@
 
 (eval-when-compile (require 'cl))
 
-(defvar vim-modeline/modelines 5
-  "Default number of lines for searching modelines in the
-  beginning of the buffer, and the end of the buffer.")
+(defgroup vim-modeline nil
+  "Facilities for setting file options based on vim modeline.")
 
-(defvar vim-modeline/options-alist
+(defcustom vim-modeline/modelines 5
+  "Default number of lines for searching modelines in the
+  beginning of the buffer, and the end of the buffer."
+  :type 'integer
+  :group 'vim-modeline)
+
+(defcustom vim-modeline/options-alist
   '(("shiftwidth" . vim-modeline/shiftwidth)
     ("sw" . vim-modeline/shiftwidth)
     ("textwidth" . vim-modeline/textwidth)
@@ -49,7 +54,9 @@
     ("et" . vim-modeline/expandtab)
     ("noexpandtab" . vim-modeline/expandtab)
     ("noet" . vim-modeline/expandtab))
-  "Alist of VIM option names and handlers")
+  "Alist of VIM option names and handlers"
+  :type '(alist :key-type (string :tag "Option") :value-type (function :tag "Handler function"))
+  :group 'vim-modeline)
 
 ;;;
 ;;; From the VIM help messages
