@@ -225,6 +225,7 @@ Otherwise this function returns nil."
                                                         (car input))))))))
     (vim-modeline/parse-options result)))
 
+;;;###autoload
 (defun vim-modeline/do ()
   (let ((options (vim-modeline/get)))
     (dolist (opt options)
