@@ -284,6 +284,11 @@ Otherwise this function returns nil."
              (memq major-mode '(html-mode))
              (make-local-variable 'sgml-basic-offset)
              (setq sgml-basic-offset offset))
+            (;; For shell-script mode
+             (memq major-mode '(shell-script-mode
+                                pkgbuild-mode))
+             (make-local-variable 'sh-basic-offset)
+             (setq sh-basic-offset offset))
             (t
              (lwarn :vim-modeline :warning
                     "shiftwidth for %S is not supported." major-mode))))))
